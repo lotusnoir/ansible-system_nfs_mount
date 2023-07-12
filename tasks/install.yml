@@ -8,6 +8,8 @@
       ansible.builtin.package:
         name: "nfs-common"
         state: present
+      #when: ansible_os_family == 'Debian'
+      when: ansible_distribution == "Debian"
 
     #- name: "Find mount point on fstab"
     #  ansible.builtin.command: "cat /etc/fstab"
@@ -22,10 +24,10 @@
       with_items: "{{ nfs_mount }}"
 
     - name: "Mount nfs share and add it to /etc/fstab"
-      ansible.builtin.mount:
+      ansible.posix.mount:
         src: "{{ item.nfs_server }}"
         path: "{{ item.nfs_folder }}"
         fstype: nfs
-        opts: "{{ item.nfs_opts }}"
+        opts: "{{ item.nfs_opts | default(omit) }}"
         state: mounted
       with_items: "{{ nfs_mount }}"
