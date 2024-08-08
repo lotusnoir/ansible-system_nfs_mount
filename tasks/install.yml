@@ -12,13 +12,12 @@
       retries: 12
       delay: 10
       until: pkg_result is success
-      #when: ansible_os_family == 'Debian'
       when: ansible_distribution == "Debian"
 
-    #- name: "Find mount point on fstab"
-    #  ansible.builtin.command: "cat /etc/fstab"
-    #  register: content
-    #  changed_when: false
+    # - name: "Find mount point on fstab"
+    #   ansible.builtin.command: "cat /etc/fstab"
+    #   register: content
+    #   changed_when: false
 
     - name: "Create mount point directories"
       ansible.builtin.file:
@@ -27,19 +26,19 @@
         mode: '0755'
       with_items: "{{ nfs_mount }}"
 
-    #- name: "Test nfs server is accessible"
-    #  wait_for:
-    #    host: "{{ item.nfs_server | split(':') | first }}"
-    #    port: 2049
-    #    state: started         # Port should be open
-    #    delay: 0               # No wait before first check (sec)
-    #    timeout: 3             # Stop checking after timeout (sec)
-    #  with_items: "{{ nfs_mount }}"
-    #  failed_when: false
-    #  register: nfs_reach
+    # - name: "Test nfs server is accessible"
+    #   wait_for:
+    #     host: "{{ item.nfs_server | split(':') | first }}"
+    #     port: 2049
+    #     state: started         # Port should be open
+    #     delay: 0               # No wait before first check (sec)
+    #     timeout: 3             # Stop checking after timeout (sec)
+    #   with_items: "{{ nfs_mount }}"
+    #   failed_when: false
+    #   register: nfs_reach
 
-    #- debug:
-    #    var: nfs_reach
+    # - debug:
+    #     var: nfs_reach
 
     - name: "Mount nfs share and add it to /etc/fstab"
       ansible.posix.mount:
@@ -50,7 +49,6 @@
         state: mounted
       with_items: "{{ nfs_mount }}"
       ignore_errors: true
-      #failed_when: false
       async: 30   # How long to run?
       poll: 5     # How frequently to check?
-      #when: not nfs_reach.results[0].failed
+      # when: not nfs_reach.results[0].failed
