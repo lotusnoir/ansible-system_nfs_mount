@@ -10,8 +10,7 @@ rules:
   brackets: enable
   colons: enable
   commas: enable
-  comments:
-    min-spaces-from-content: 1
+  comments: false
   comments-indentation: false
   document-end: disable
   document-start:
