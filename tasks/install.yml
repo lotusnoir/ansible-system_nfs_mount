@@ -12,7 +12,7 @@
       retries: 12
       delay: 10
       until: __pkg_result is success
-      when: ansible_distribution == "Debian"
+      when: ansible_facts.distribution == "Debian"
 
     # - name: "Find mount point on fstab"
     #   ansible.builtin.command: "cat /etc/fstab"
